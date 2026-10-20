@@ -1,15 +1,20 @@
 
-# Python temporary files
-__pycache__/
-*.pyc
-.venv/
+# Raw datasets
+data/
+reference-gcc-real-estate/
 
-# Private configuration
+# Environment and secrets
 .env
+.env.*
+!.env.example
 
-# Temporary logs
-*.log
+# Python generated files
+__pycache__/
+*.py[cod]
+.venv/
+venv/
 
-# Operating system files
+# Editor and operating system files
+.vscode/
 .DS_Store
 Thumbs.db
