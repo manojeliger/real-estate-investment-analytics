@@ -1,7 +1,7 @@
 
 -- Project: Real Estate Investment & Property Analytics System
--- Purpose: Create reusable SQL views for exploratory analysis.
--- Note: Validate source data and repeated imports before final reporting.
+-- Source: property_transactions_analytics
+-- Purpose: Create reusable analytical views.
 
 -- 1. Sales summary by locality
 CREATE OR REPLACE VIEW sales_locality_summary AS
@@ -10,7 +10,7 @@ SELECT
     COUNT(*) AS total_sales_records,
     ROUND(AVG(transaction_value), 2) AS avg_transaction_value,
     ROUND(AVG(actual_area), 2) AS avg_property_area
-FROM property_transactions
+FROM property_transactions_analytics
 WHERE transaction_group = 'Sales'
   AND transaction_value > 0
   AND actual_area > 0
@@ -27,14 +27,14 @@ SELECT
         2
     ) AS avg_price_per_sqm,
     ROUND(AVG(actual_area), 2) AS avg_property_area
-FROM property_transactions_clean
+FROM property_transactions_analytics
 WHERE transaction_group = 'Sales'
   AND transaction_value > 0
   AND actual_area > 0
 GROUP BY locality
 HAVING COUNT(*) >= 100;
 
--- 3. Localities eligible for further comparison
+-- 3. Localities with sufficient sales activity
 CREATE OR REPLACE VIEW top_investment_localities AS
 SELECT
     locality,
@@ -52,13 +52,12 @@ SELECT
     COUNT(*) AS total_sales_records,
     ROUND(SUM(transaction_value), 2) AS total_transaction_value,
     ROUND(AVG(transaction_value), 2) AS avg_transaction_value
-FROM property_transactions_clean
+FROM property_transactions_analytics
 WHERE transaction_group = 'Sales'
   AND transaction_value > 0
-GROUP BY DATE_TRUNC('month', instance_date)
-;
+GROUP BY DATE_TRUNC('month', instance_date);
 
--- 5. Comparison by property usage
+-- 5. Compare property usage categories
 CREATE OR REPLACE VIEW property_usage_analysis AS
 SELECT
     property_usage,
@@ -69,8 +68,27 @@ SELECT
         AVG(transaction_value / NULLIF(actual_area, 0)),
         2
     ) AS avg_price_per_sqm
-FROM property_transactions_clean
+FROM property_transactions_analytics
 WHERE transaction_group = 'Sales'
   AND transaction_value > 0
   AND actual_area > 0
 GROUP BY property_usage;
+
+-- 6. Compare property types and subtypes
+CREATE OR REPLACE VIEW property_type_analysis AS
+SELECT
+    property_type,
+    property_sub_type,
+    COUNT(*) AS sales_records,
+    ROUND(AVG(transaction_value), 2) AS avg_transaction_value,
+    ROUND(
+        AVG(transaction_value / NULLIF(actual_area, 0)),
+        2
+    ) AS avg_price_per_sqm,
+    ROUND(AVG(actual_area), 2) AS avg_property_area
+FROM property_transactions_analytics
+WHERE transaction_group = 'Sales'
+  AND transaction_value > 0
+  AND actual_area > 0
+GROUP BY property_type, property_sub_type
+HAVING COUNT(*) >= 100;

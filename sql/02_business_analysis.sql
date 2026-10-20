@@ -40,3 +40,17 @@ SELECT
     avg_price_per_sqm
 FROM property_usage_analysis
 ORDER BY sales_records DESC;
+
+
+-- 5. Compare property types and subtypes
+SELECT
+    property_type,
+    property_sub_type,
+    sales_records,
+    avg_transaction_value,
+    avg_price_per_sqm,
+    avg_property_area
+FROM property_type_analysis
+ORDER BY sales_records DESC
+LIMIT 15;
+
