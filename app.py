@@ -346,6 +346,81 @@ except Exception as error:
     st.caption(f"Error type: {type(error).__name__}")
 
 
+# --------------------------------------------------
+# Property usage analysis
+# --------------------------------------------------
+st.divider()
+st.subheader("Property Usage Analysis")
+
+
+@st.cache_data(ttl=300)
+def load_property_usage():
+    query = text("""
+        SELECT
+            property_usage,
+            sales_records,
+            avg_transaction_value,
+            avg_property_area,
+            avg_price_per_sqm
+        FROM property_usage_analysis
+        ORDER BY sales_records DESC
+    """)
+
+    with get_engine().connect() as connection:
+        return pd.read_sql(query, connection)
+
+
+try:
+    usage_df = load_property_usage()
+
+    if not usage_df.empty:
+        col1, col2 = st.columns(2)
+
+        with col1:
+            usage_fig = px.bar(
+                usage_df,
+                x="property_usage",
+                y="sales_records",
+                title="Sales by Property Usage",
+                labels={
+                    "property_usage": "Property Usage",
+                    "sales_records": "Sales Records",
+                },
+                text="sales_records",
+            )
+            usage_fig.update_traces(textposition="outside")
+            st.plotly_chart(usage_fig, use_container_width=True)
+
+        with col2:
+            price_fig = px.bar(
+                usage_df,
+                x="property_usage",
+                y="avg_price_per_sqm",
+                title="Average Price per Square Meter",
+                labels={
+                    "property_usage": "Property Usage",
+                    "avg_price_per_sqm": "Average Price / m²",
+                },
+                text="avg_price_per_sqm",
+            )
+            price_fig.update_traces(
+                texttemplate="%{text:,.2f}",
+                textposition="outside",
+            )
+            st.plotly_chart(price_fig, use_container_width=True)
+
+        st.dataframe(
+            usage_df,
+            use_container_width=True,
+            hide_index=True,
+        )
+    else:
+        st.info("No property usage data is available.")
+
+except Exception as error:
+    st.error("Could not load property usage analysis.")
+    st.caption(f"Error type: {type(error).__name__}")
+
 st.caption(
     "Data source: PostgreSQL analytical view. "
     "Figures are descriptive and are not investment advice."

@@ -1,66 +1,96 @@
-# Real Estate Investment & Property Analytics System
 
-## Project Overview
+# Dubai Real Estate Investment & Property Analytics
 
-A PostgreSQL-based analytics project that explores Dubai real estate transaction data to compare property prices, analyze sales activity, and investigate differences across localities and property categories.
+An end-to-end data analytics project using PostgreSQL, Python, Pandas, Plotly, and Streamlit to explore Dubai property transaction records.
 
-## Objectives
+## Project Objectives
 
 - Analyze property sales across localities.
 - Compare average transaction values and prices per square meter.
-- Examine monthly sales activity and transaction values.
-- Compare residential and commercial property transactions.
-- Explore relationships between property characteristics and recorded prices.
+- Explore monthly sales activity and transaction-value trends.
+- Compare property types and usage categories.
+- Present insights through an interactive dashboard.
 
 ## Technology Stack
 
 - **Database:** PostgreSQL
-- **Query Language:** SQL
-- **Database Client:** pgAdmin 4
-- **Development Environment:** Visual Studio Code
-- **Version Control:** Git and GitHub
+- **Querying:** SQL, analytical views, aggregations
+- **Application:** Python, Streamlit
+- **Data processing:** Pandas
+- **Visualization:** Plotly
+- **Version control:** Git and GitHub
 
-## Dataset
+## Dashboard Features
 
-The project uses a CSV dataset containing Dubai real estate transaction records.
-
-The source includes fields such as transaction date, transaction group, locality, property type, transaction value, property area, ownership type, and nearest metro station.
+- KPI cards summarizing locality-level results.
+- Interactive locality price comparison.
+- Minimum-sales filter and searchable locality table.
+- CSV export of filtered locality data.
+- Monthly sales and transaction-value trends.
+- Property-type and property-usage comparisons.
 
 ## Project Structure
 
 ```text
 real-estate-investment-analytics/
-├── data/
-├── sql/
-│   ├── 01_create_analysis_views.sql
-│   └── 02_business_analysis.sql
-├── analysis/
-├── dashboard/
-├── README.md
-└── .gitignore
+├── .streamlit/          # Local Streamlit configuration
+├── analysis/            # Analysis work
+├── dashboard/           # Dashboard-related assets
+├── data/                # Local datasets (not committed)
+├── sql/                 # SQL analysis scripts
+├── app.py               # Streamlit application
+├── test_connection.py   # PostgreSQL connection test
+├── requirements.txt     # Python dependencies
+├── .gitignore
+└── README.md
 ```
 
-## Work Completed
+## Run Locally
 
-- Created a PostgreSQL database and transaction table.
-- Inspected the source dataset and its columns.
-- Developed exploratory SQL queries using aggregation, grouping, filtering, and sorting.
-- Created reusable views for locality pricing, monthly sales trends, and property usage.
-- Created an initial deduplicated working table.
-- Began validating data quality and repeated records.
+1. Install Python and PostgreSQL.
+2. Create and activate a virtual environment.
+3. Install dependencies:
 
-## Current Status
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-**In progress.** The analytical queries are exploratory. Duplicate imports and source-data duplication still require validation before final transaction counts or investment conclusions can be trusted.
+4. Create `.streamlit/secrets.toml` with your local PostgreSQL credentials:
 
-## Planned Improvements
+   ```toml
+   [postgres]
+   host = "localhost"
+   port = 5432
+   database = "postgres"
+   username = "postgres"
+   password = "YOUR_LOCAL_PASSWORD"
+   ```
 
-- Validate and clean the dataset.
-- Confirm source-data completeness and record uniqueness.
-- Add further SQL analyses and documented findings.
-- Build visualizations and an interactive dashboard.
-- Document reproducible setup and execution steps.
+5. Ensure the database contains the required analytical views.
+6. Start the dashboard:
 
-## Disclaimer
+   ```bash
+   streamlit run app.py
+   ```
 
-This project is intended for educational and exploratory market analysis. Its outputs are not financial advice or guaranteed investment recommendations.
+## Data Quality and Limitations
+
+- The raw dataset contains 179,229 records.
+- Exact full-row deduplication produced 178,744 distinct rows.
+- Repeated transaction IDs do not necessarily indicate duplicate transactions.
+- Current analytical views use `property_transactions_analytics`.
+- September 2025 is incomplete in the available dataset.
+- Currency units must be confirmed against the source documentation before interpreting monetary figures.
+- Results are descriptive and are not investment advice.
+
+## Future Improvements
+
+- Validate transaction semantics and source currency.
+- Add data-quality reporting and clearer metric definitions.
+- Add locality and property filters across all dashboard sections.
+- Improve deployment and automated testing.
+- Publish a demo and dashboard screenshots.
+
+## Status
+
+The local Streamlit dashboard is connected to PostgreSQL and includes locality, monthly trend, property-type, and property-usage analysis.
