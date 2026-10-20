@@ -1,0 +1,15 @@
+
+# Python temporary files
+__pycache__/
+*.pyc
+.venv/
+
+# Private configuration
+.env
+
+# Temporary logs
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
