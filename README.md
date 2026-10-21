@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 # Dubai Real Estate Investment & Property Analytics
 
 An end-to-end data analytics project using PostgreSQL, Python, Pandas, Plotly, and Streamlit to explore Dubai property transaction records.
@@ -64,7 +62,7 @@ real-estate-investment-analytics/
    port = 5432
    database = "postgres"
    username = "postgres"
-   password = "YOUR_LOCAL_PASSWORD"
+   password = "LOCAL_PASSWORD"
    ```
 
 5. Ensure the database contains the required analytical views.
@@ -98,4 +96,4 @@ The local Streamlit dashboard is connected to PostgreSQL and includes locality, 
 =======
 # real-estate-investment-analytics
 Interactive real estate analytics dashboard using PostgreSQL, Python, and Streamlit.
->>>>>>> origin/main
+
