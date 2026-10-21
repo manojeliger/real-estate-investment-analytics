@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # Dubai Real Estate Investment & Property Analytics
 
@@ -94,3 +95,7 @@ real-estate-investment-analytics/
 ## Status
 
 The local Streamlit dashboard is connected to PostgreSQL and includes locality, monthly trend, property-type, and property-usage analysis.
+=======
+# real-estate-investment-analytics
+Interactive real estate analytics dashboard using PostgreSQL, Python, and Streamlit.
+>>>>>>> origin/main
